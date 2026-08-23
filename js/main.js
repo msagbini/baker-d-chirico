@@ -47,6 +47,7 @@ contactForm.addEventListener('submit', (e) => {
     // Simulate form submission
     contactForm.reset();
     successMessage.style.display = 'block';
+    successMessage.textContent = 'Thank you! We\'ll get back to you soon.';
     setTimeout(() => {
         successMessage.style.display = 'none';
     }, 5000);
@@ -55,12 +56,15 @@ contactForm.addEventListener('submit', (e) => {
 // ========== Dynamic Year in Footer ==========
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// ========== Simple Fade-in on Scroll (Intersection Observer) ==========
-const fadeElements = document.querySelectorAll('.menu__card, .feature, .space__gallery-item, .story__image, .story__text, .coffee__image, .coffee__text, .location__card, .location__map, .press__logo');
+// ========== Fade-in on Scroll with Stagger ==========
+const fadeElements = document.querySelectorAll('.menu__card, .feature, .space__gallery-item, .story__image, .story__text, .coffee__image, .coffee__text, .location-card, .press__logo, .contact__info, .contact__form');
 
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
+            // Add a small delay based on index within its parent for stagger effect
+            const delay = Array.from(entry.target.parentElement.children).indexOf(entry.target) * 80;
+            entry.target.style.transitionDelay = `${delay}ms`;
             entry.target.style.opacity = '1';
             entry.target.style.transform = 'translateY(0)';
             observer.unobserve(entry.target);
@@ -70,6 +74,7 @@ const observer = new IntersectionObserver((entries) => {
 
 fadeElements.forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    el.style.transform = 'translateY(25px)';
+    el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
     observer.observe(el);
+});
